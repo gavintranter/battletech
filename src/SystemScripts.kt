@@ -14,8 +14,8 @@ private enum class Faction {
     Davion,
     NoFaction;
 
-    companion object {
-        operator fun invoke(value: String): Faction {
+    companion object Factory {
+        fun from(value: String): Faction {
             return when {
                 value.contains("Aurigan") -> Aurigan
                 else -> Faction.valueOf(value)
@@ -55,7 +55,6 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             Z("\"z\":"),
             JUMPDISTANCE("\"JumpDistance\""),
             IGNORE("")
-
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
@@ -72,7 +71,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
                 extractValue(data[2]).toDouble(),
                 extractValue(data[3]).toDouble())
             val jumpDistance = extractValue(data[4]).toInt()
-            val faction = uk.trantr.battletech.Faction(extractValue(data[5]))
+            val faction = Faction.from(extractValue(data[5]))
 
             return PlanetarySystem(name, location, jumpDistance, faction)
         }
