@@ -53,8 +53,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             X("\"x\":"),
             Y("\"y\":"),
             Z("\"z\":"),
-            JUMPDISTANCE("\"JumpDistance\""),
-            IGNORE("")
+            JUMPDISTANCE("\"JumpDistance\"")
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
