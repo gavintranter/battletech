@@ -40,6 +40,24 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([-.\\w]+)\"?,?".toRegex()
         private val p = Properties()
 
+        private fun extractValue(value: String): String {
+            val escaped = value.replace(regex, "$2")
+            p.load(StringReader("$key=$escaped"))
+
+            return p.getProperty(key)
+        }
+
+        private enum class FieldType(val field: String) {
+            NAME("\"Name\":"),
+            OWNER("\"Owner\":"),
+            X("\"x\":"),
+            Y("\"y\":"),
+            Z("\"z\":"),
+            JUMPDISTANCE("\"JumpDistance\""),
+            IGNORE("")
+
+        }
+
         operator fun invoke(lines: List<String>): PlanetarySystem {
             val data = lines.map { it.trim() }
                 .filter { it.startsWith(FieldType.NAME.field) ||
@@ -57,23 +75,6 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val faction = uk.trantr.battletech.Faction(extractValue(data[5]))
 
             return PlanetarySystem(name, location, jumpDistance, faction)
-        }
-
-        private enum class FieldType(val field: String) {
-            NAME("\"Name\":"),
-            OWNER("\"Owner\":"),
-            X("\"x\":"),
-            Y("\"y\":"),
-            Z("\"z\":"),
-            JUMPDISTANCE("\"JumpDistance\""),
-            IGNORE("")
-        }
-
-        private fun extractValue(value: String): String {
-            val escaped = value.replace(regex, "$2")
-            p.load(StringReader("$key=$escaped"))
-
-            return p.getProperty(key)
         }
     }
 }
