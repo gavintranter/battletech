@@ -4,16 +4,6 @@ import java.io.File
 import java.io.StringReader
 import java.util.*
 
-private enum class FieldType(val field: String) {
-    NAME("\"Name\":"),
-    OWNER("\"Owner\":"),
-    X("\"x\":"),
-    Y("\"y\":"),
-    Z("\"z\":"),
-    JUMPDISTANCE("\"JumpDistance\""),
-    IGNORE("")
-}
-
 private enum class Faction {
     MagistracyOfCanopus,
     Locals,
@@ -50,15 +40,33 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([-.\\w]+)\"?,?".toRegex()
         private val p = Properties()
 
-        operator fun invoke(value: List<String>): PlanetarySystem {
-            val name = extractValue(value[0])
-            val location = Location(extractValue(value[1]).toDouble(),
-                extractValue(value[2]).toDouble(),
-                extractValue(value[3]).toDouble())
-            val jumpDistance = extractValue(value[4]).toInt()
-            val faction = uk.trantr.battletech.Faction(extractValue(value[5]))
+        operator fun invoke(lines: List<String>): PlanetarySystem {
+            val data = lines.map { it.trim() }
+                .filter { it.startsWith(FieldType.NAME.field) ||
+                        it.startsWith(FieldType.X.field) ||
+                        it.startsWith(FieldType.Y.field) ||
+                        it.startsWith(FieldType.Z.field) ||
+                        it.startsWith(FieldType.JUMPDISTANCE.field) ||
+                        it.startsWith(FieldType.OWNER.field) }
+
+            val name = extractValue(data[0])
+            val location = Location(extractValue(data[1]).toDouble(),
+                extractValue(data[2]).toDouble(),
+                extractValue(data[3]).toDouble())
+            val jumpDistance = extractValue(data[4]).toInt()
+            val faction = uk.trantr.battletech.Faction(extractValue(data[5]))
 
             return PlanetarySystem(name, location, jumpDistance, faction)
+        }
+
+        private enum class FieldType(val field: String) {
+            NAME("\"Name\":"),
+            OWNER("\"Owner\":"),
+            X("\"x\":"),
+            Y("\"y\":"),
+            Z("\"z\":"),
+            JUMPDISTANCE("\"JumpDistance\""),
+            IGNORE("")
         }
 
         private fun extractValue(value: String): String {
@@ -72,7 +80,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 
 fun main(args: Array<String>) {
     val systemsFiles = File("/users/Gavin/Documents/battleTech").listFiles().filter { it.extension.equals("json", true) }
-    val systemsByAllegiance = systemsFiles.map { toSystem(it.readLines()) }
+    val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it.readLines()) }
         .distinct()
         .groupBy { it.allegiance }
 
@@ -81,16 +89,4 @@ fun main(args: Array<String>) {
                     system -> println(system)
             }
     }
-}
-
-private fun toSystem(lines: List<String>): PlanetarySystem {
-    val data = lines.map { it.trim() }
-        .filter { it.startsWith(FieldType.NAME.field) ||
-                it.startsWith(FieldType.X.field) ||
-                it.startsWith(FieldType.Y.field) ||
-                it.startsWith(FieldType.Z.field) ||
-                it.startsWith(FieldType.JUMPDISTANCE.field) ||
-                it.startsWith(FieldType.OWNER.field) }
-
-    return PlanetarySystem(data)
 }
