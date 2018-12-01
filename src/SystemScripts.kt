@@ -40,29 +40,10 @@ private class Location(val x: Double, val y: Double, val z: Double) {
     }
 }
 
-private class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int, val allegiance: Faction) {
+private data class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int, val allegiance: Faction) {
     override fun toString(): String {
         return "$name $allegiance $location $jumpDistance"
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PlanetarySystem
-
-        if (name != other.name) return false
-        if (allegiance != other.allegiance) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + allegiance.hashCode()
-        return result
-    }
-
 
     companion object {
         private const val key = "key"
