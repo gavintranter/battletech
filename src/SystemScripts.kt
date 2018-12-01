@@ -37,7 +37,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 
     companion object {
         private const val key = "key"
-        private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([-.\\w]+)\"?,?".toRegex()
+        private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([-.\\w ]+)\"?,?".toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
