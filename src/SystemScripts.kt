@@ -40,7 +40,7 @@ private class Location(val x: Double, val y: Double, val z: Double) {
     }
 }
 
-private class System(val name: String, val location: Location, val jumpDistance: Int, val allegiance: Faction) {
+private class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int, val allegiance: Faction) {
     override fun toString(): String {
         return "$name $allegiance $location $jumpDistance"
     }
@@ -49,7 +49,7 @@ private class System(val name: String, val location: Location, val jumpDistance:
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as System
+        other as PlanetarySystem
 
         if (name != other.name) return false
         if (allegiance != other.allegiance) return false
@@ -69,7 +69,7 @@ private class System(val name: String, val location: Location, val jumpDistance:
         private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([-.\\w]+)\"?,?".toRegex()
         private val p = Properties()
 
-        operator fun invoke(value: List<String>): System {
+        operator fun invoke(value: List<String>): PlanetarySystem {
             val name = extractValue(value[0])
             val location = Location(extractValue(value[1]).toDouble(),
                 extractValue(value[2]).toDouble(),
@@ -77,9 +77,8 @@ private class System(val name: String, val location: Location, val jumpDistance:
             val jumpDistance = extractValue(value[4]).toInt()
             val faction = uk.trantr.battletech.Faction(extractValue(value[5]))
 
-            return System(name, location, jumpDistance, faction)
+            return PlanetarySystem(name, location, jumpDistance, faction)
         }
-
 
         private fun extractValue(value: String): String {
             val escaped = value.replace(regex, "$2")
@@ -103,7 +102,7 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun toSystem(lines: List<String>): System {
+private fun toSystem(lines: List<String>): PlanetarySystem {
     val data = lines.map { it.trim() }
         .filter { it.startsWith(FieldType.NAME.field) ||
                 it.startsWith(FieldType.X.field) ||
@@ -112,5 +111,5 @@ private fun toSystem(lines: List<String>): System {
                 it.startsWith(FieldType.JUMPDISTANCE.field) ||
                 it.startsWith(FieldType.OWNER.field) }
 
-    return System(data)
+    return PlanetarySystem(data)
 }
