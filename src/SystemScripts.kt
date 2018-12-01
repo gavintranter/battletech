@@ -47,15 +47,6 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             return p.getProperty(key)
         }
 
-        private enum class FieldType(val field: String) {
-            NAME("\"Name\":"),
-            OWNER("\"Owner\":"),
-            X("\"x\":"),
-            Y("\"y\":"),
-            Z("\"z\":"),
-            JUMPDISTANCE("\"JumpDistance\"")
-        }
-
         operator fun invoke(lines: List<String>): PlanetarySystem {
             val fields = lines.filter { it.matches(regex) }
                 .map { extractValue(it) }
