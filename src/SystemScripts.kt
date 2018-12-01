@@ -57,13 +57,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
-            val fields = lines.map { it.trim() }
-                .filter { it.startsWith(FieldType.NAME.field) ||
-                        it.startsWith(FieldType.X.field) ||
-                        it.startsWith(FieldType.Y.field) ||
-                        it.startsWith(FieldType.Z.field) ||
-                        it.startsWith(FieldType.JUMPDISTANCE.field) ||
-                        it.startsWith(FieldType.OWNER.field) }
+            val fields = lines.filter { it.matches(regex) }
                 .map { extractValue(it) }
 
             val name = fields[0]
