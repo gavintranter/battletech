@@ -24,7 +24,7 @@ private enum class Faction {
     }
 }
 
-private class Location(val x: Double, val y: Double, val z: Double) {
+private data class Location(val x: Double, val y: Double, val z: Double) {
     override fun toString(): String {
         return "$x,$y,$z"
     }
