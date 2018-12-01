@@ -58,20 +58,19 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
-            val data = lines.map { it.trim() }
+            val fields = lines.map { it.trim() }
                 .filter { it.startsWith(FieldType.NAME.field) ||
                         it.startsWith(FieldType.X.field) ||
                         it.startsWith(FieldType.Y.field) ||
                         it.startsWith(FieldType.Z.field) ||
                         it.startsWith(FieldType.JUMPDISTANCE.field) ||
                         it.startsWith(FieldType.OWNER.field) }
+                .map { extractValue(it) }
 
-            val name = extractValue(data[0])
-            val location = Location(extractValue(data[1]).toDouble(),
-                extractValue(data[2]).toDouble(),
-                extractValue(data[3]).toDouble())
-            val jumpDistance = extractValue(data[4]).toInt()
-            val faction = Faction.from(extractValue(data[5]))
+            val name = fields[0]
+            val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
+            val jumpDistance = fields[4].toInt()
+            val faction = Faction.from(fields[5])
 
             return PlanetarySystem(name, location, jumpDistance, faction)
         }
