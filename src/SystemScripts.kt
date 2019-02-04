@@ -62,7 +62,8 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 }
 
 fun main(args: Array<String>) {
-    val systemsFiles = File("/users/Gavin/Documents/battleTech").listFiles().filter { it.extension.equals("json", true) }
+    // Replace path with location of planetary system json files
+    val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it.readLines()) }
         .distinct()
         .groupBy { it.allegiance }
