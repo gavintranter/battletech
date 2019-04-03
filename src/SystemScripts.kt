@@ -27,9 +27,9 @@ private data class Location(val x: Double, val y: Double, val z: Double) {
 }
 
 private data class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int,
-                                   val allegiance: Faction, val starLeague: Boolean = false) {
+                                   val allegiance: Faction, val difficulty: Int, val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "$name $allegiance $location $jumpDistance"
+        return "$name $allegiance $location $jumpDistance $difficulty $starLeague"
     }
 
     companion object {
@@ -54,7 +54,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val faction = Faction.valueOf(fields[5])
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            return PlanetarySystem(name, location, jumpDistance, faction, starLeague)
+            return PlanetarySystem(name, location, jumpDistance, faction, 0)
         }
     }
 }
