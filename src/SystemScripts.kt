@@ -29,12 +29,12 @@ private data class Location(val x: Double, val y: Double, val z: Double) {
 private data class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int,
                                    val allegiance: Faction, val difficulty: Int, val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "$name $allegiance $location $jumpDistance $difficulty $starLeague"
+        return "$name $allegiance $location $jumpDistance $difficulty"
     }
 
     companion object {
         private const val key = "key"
-        private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"): \"?([[\\\\]-.\\w ']+)\"?,?".toRegex()
+        private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"|\"DefaultDifficulty\"): \"?([[\\\\]-.\\w ']+)\"?,?".toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
@@ -52,9 +52,10 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
             val jumpDistance = fields[4].toInt()
             val faction = Faction.valueOf(fields[5])
+            val difficulty = fields[6].toInt()
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            return PlanetarySystem(name, location, jumpDistance, faction, 0)
+            return PlanetarySystem(name, location, jumpDistance, faction, difficulty, starLeague)
         }
     }
 }
