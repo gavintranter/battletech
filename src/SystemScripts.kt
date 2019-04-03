@@ -34,16 +34,16 @@ private data class PlanetarySystem(val name: String, val location: Location, val
     }
 
     companion object {
-        private const val key = "key"
+        private const val KEY = "KEY"
         private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"|\"DefaultDifficulty\"|\"ContractEmployers\"): \"?([[\\\\]-.\\w ']+|.*)\"?,?"
             .toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
             val escaped = value.replace(regex, "$2")
-            p.load(StringReader("$key=$escaped"))
+            p.load(StringReader("$KEY=$escaped"))
 
-            return p.getProperty(key)
+            return p.getProperty(KEY)
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
