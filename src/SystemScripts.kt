@@ -7,21 +7,17 @@ import java.util.*
 private enum class Faction {
     MagistracyOfCanopus,
     Locals,
-    Aurigan,
+    AuriganDirectorate,
+    AuriganMercenaries,
+    AuriganPirates,
+    AuriganRestoration,
     Marik,
     Liao,
     TaurianConcordat,
     Davion,
+    ComStar,
+    MercenaryReviewBoard,
     NoFaction;
-
-    companion object Factory {
-        fun from(value: String): Faction {
-            return when {
-                value.contains("Aurigan") -> Aurigan
-                else -> Faction.valueOf(value)
-            }
-        }
-    }
 }
 
 private data class Location(val x: Double, val y: Double, val z: Double) {
@@ -55,7 +51,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val name = fields[0]
             val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
             val jumpDistance = fields[4].toInt()
-            val faction = Faction.from(fields[5])
+            val faction = Faction.valueOf(fields[5])
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
             return PlanetarySystem(name, location, jumpDistance, faction, starLeague)
@@ -68,7 +64,6 @@ fun main(args: Array<String>) {
     val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it.readLines()) }
         .distinct()
-        .filter { it.starLeague }
         .groupBy { it.allegiance }
 
     systemsByAllegiance.keys.forEach {
