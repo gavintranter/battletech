@@ -20,6 +20,19 @@ private enum class Faction {
     NoFaction;
 }
 
+private data class Skulls(val value: Double) {
+    override fun toString(): String {
+        return "[$value Skulls]"
+    }
+
+    companion object Factory {
+        fun from(difficulty: Int): Skulls {
+            val skulls = (difficulty * 0.5) + 4
+            return Skulls(skulls)
+        }
+    }
+}
+
 private data class Location(val x: Double, val y: Double, val z: Double) {
     override fun toString(): String {
         return "$x,$y,$z"
@@ -27,10 +40,10 @@ private data class Location(val x: Double, val y: Double, val z: Double) {
 }
 
 private data class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int,
-                                   val allegiance: Faction, val difficulty: Int, val employers: Set<String>,
+                                   val allegiance: Faction, val skulls: Skulls, val employers: Set<String>,
                                    val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "$name $allegiance $location $jumpDistance $difficulty"
+        return "$name $allegiance $location $jumpDistance $skulls"
     }
 
     companion object {
@@ -54,11 +67,11 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
             val jumpDistance = fields[4].toInt()
             val faction = Faction.valueOf(fields[5])
-            val difficulty = fields[6].toInt()
+            val skulls = Skulls.from(fields[6].toInt())
             val employers = fields[7].split(" ").map { it.trim('[', ']', '"', ',') }.toSet()
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            return PlanetarySystem(name, location, jumpDistance, faction, difficulty, employers, starLeague)
+            return PlanetarySystem(name, location, jumpDistance, faction, skulls, employers, starLeague)
         }
     }
 }
