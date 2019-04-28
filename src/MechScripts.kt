@@ -22,9 +22,9 @@ private enum class Class {
     }
 }
 
-private data class Mech(val model: String, val name: String, val weightClass: Class, val weight: Int) {
+private data class Mech(val model: String, val name: String, val tonnageClass: Class, val tonnage: Int) {
     override fun toString(): String {
-        return "$model, $name, $weightClass, $weight"
+        return "$model, $name, $tonnageClass, $tonnage"
     }
 
     companion object {
@@ -51,7 +51,7 @@ private data class Mech(val model: String, val name: String, val weightClass: Cl
 fun main(args: Array<String>) {
     val mechs = File("/users/Gavin/Documents/battleTech/Mechs").listFiles().filter { it.extension.equals("json", true) }
     mechs.map { Mech(it.readLines()) }
-        .sortedWith(compareBy(Mech::weight, Mech::name))
+        .sortedWith(compareBy(Mech::tonnage, Mech::name))
         .forEach { println(it) }
 
 }
