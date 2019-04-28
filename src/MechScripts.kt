@@ -11,8 +11,13 @@ private enum class Class {
     Assault;
 
     companion object Factory {
-        fun from(value: String): Class {
-            return Class.valueOf(value.toLowerCase().capitalize())
+        fun from(tonnage: Int): Class {
+            return when (tonnage) {
+                in 1 until 40 -> Light
+                in 40 until 60 -> Medium
+                in 60 until 80 -> Heavy
+                else -> Assault
+            }
         }
     }
 }
@@ -24,7 +29,7 @@ private data class Mech(val model: String, val name: String, val weightClass: Cl
 
     companion object {
         private const val key = "key"
-        private val regex = ".*(\"Name\"|\"Tonnage\"|\"weightClass\"|\"VariantName\"): (\"?|[^0]\\d*[[\\\\]-.\\w ']+)\"?,?".toRegex()
+        private val regex = ".*(\"Name\"|\"Tonnage\"|\"VariantName\"): (\"?|[^0]\\d*[[\\\\]-.\\w ']+)\"?,?".toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
@@ -35,10 +40,10 @@ private data class Mech(val model: String, val name: String, val weightClass: Cl
         }
 
         operator fun invoke(lines: List<String>): Mech {
-            val (name, tonnage, weightClass, variantName) = lines.filter { it.matches(regex) }
+            val (name, tonnage, variantName) = lines.filter { it.matches(regex) }
                 .map { extractValue(it) }
 
-            return Mech(variantName, name, Class.from(weightClass), tonnage.toInt())
+            return Mech(variantName, name, Class.from(tonnage.toInt()), tonnage.toInt())
         }
     }
 }
