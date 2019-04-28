@@ -77,7 +77,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         operator fun invoke(lines: List<String>): PlanetarySystem {
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { extractValue(it) }
+            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map(::extractValue)
             return PlanetarySystem(name,
                 Location.from(x, y, z, jumpDistance),
                 Faction.valueOf(faction),
@@ -98,7 +98,7 @@ fun main(args: Array<String>) {
     val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it.readLines()) }
         .distinct()
-        .sortedBy { it.allegiance }
+        .sortedBy(PlanetarySystem::allegiance)
 
     systemsByAllegiance.forEach { println(it) }
 }
