@@ -5,19 +5,19 @@ import java.io.StringReader
 import java.util.*
 
 private enum class Faction {
-    MagistracyOfCanopus,
-    Locals,
+    ComStar,
+    Davion,
+    Liao,
+    Marik,
     AuriganDirectorate,
     AuriganMercenaries,
     AuriganPirates,
     AuriganRestoration,
-    Marik,
-    Liao,
+    MagistracyOfCanopus,
     TaurianConcordat,
-    Davion,
-    ComStar,
-    MercenaryReviewBoard,
-    NoFaction;
+    Locals,
+    NoFaction,
+    MercenaryReviewBoard;
 }
 
 private data class Skulls(val value: Double) {
