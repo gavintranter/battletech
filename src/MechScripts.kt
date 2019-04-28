@@ -35,15 +35,10 @@ private data class Mech(val model: String, val name: String, val weightClass: Cl
         }
 
         operator fun invoke(lines: List<String>): Mech {
-            val fields = lines.filter { it.matches(regex) }
+            val (name, tonnage, weightClass, variantName) = lines.filter { it.matches(regex) }
                 .map { extractValue(it) }
 
-            val name = fields[0]
-            val tonnage = fields[1].toInt()
-            val weightClass = Class.from(fields[2])
-            val variantName = fields[3]
-
-            return Mech(variantName, name, weightClass, tonnage)
+            return Mech(variantName, name, Class.from(weightClass), tonnage.toInt())
         }
     }
 }
