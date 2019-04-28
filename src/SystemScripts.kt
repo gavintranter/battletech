@@ -37,23 +37,22 @@ private data class Skulls(val value: Double) {
     }
 }
 
-private data class Location(val x: Double, val y: Double, val z: Double) {
+private data class Location(val x: Double, val y: Double, val z: Double, val jumpDistance: Int) {
     override fun toString(): String {
-        return "[$x,$y,$z]"
+        return "[[$x,$y,$z],[$jumpDistance]]"
     }
 
     companion object Factory {
-        fun from(x: String, y: String, z: String): Location {
-            return Location(x.toDouble(), y.toDouble(), z.toDouble())
+        fun from(x: String, y: String, z: String, jumpDistance: String): Location {
+            return Location(x.toDouble(), y.toDouble(), z.toDouble(), jumpDistance.toInt())
         }
     }
 }
 
-private data class PlanetarySystem(val name: String, val location: Location, val jumpDistance: Int,
-                                   val allegiance: Faction, val skulls: Skulls, val employers: Set<String>,
-                                   val starLeague: Boolean = false) {
+private data class PlanetarySystem(val name: String, val location: Location, val allegiance: Faction,
+                                   val skulls: Skulls, val employers: Set<String>, val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "$name $allegiance $location $jumpDistance $skulls"
+        return "$name $allegiance $location $skulls"
     }
 
     companion object {
@@ -74,8 +73,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 
             val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { extractValue(it) }
             return  PlanetarySystem(name,
-                Location.from(x, y, z),
-                jumpDistance.toInt(),
+                Location.from(x, y, z, jumpDistance),
                 Faction.valueOf(faction),
                 Skulls.from(difficulty),
                 extractEmployers(employers),
