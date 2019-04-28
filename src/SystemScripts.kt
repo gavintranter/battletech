@@ -56,7 +56,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             .toRegex()
         private val p = Properties()
 
-        private fun fixUnicode(value: String): String {
+        private fun extractValue(value: String): String {
             val escaped = value.replace(regex, "$2")
             p.load(StringReader("$KEY=$escaped"))
 
@@ -66,7 +66,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         operator fun invoke(lines: List<String>): PlanetarySystem {
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { fixUnicode(it) }
+            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { extractValue(it) }
             return  PlanetarySystem(name,
                 Location(x.toDouble(), y.toDouble(), z.toDouble()),
                 jumpDistance.toInt(),
