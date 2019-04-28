@@ -9,19 +9,25 @@ operator fun <T> List<T>.component7() = this[6]
 operator fun <T> List<T>.component8() = this[7]
 
 private enum class Faction {
+    // Independent powers
     ComStar,
+    MercenaryReviewBoard,
+    // Inner Sphere
     Davion,
+    Kurita,
     Liao,
     Marik,
+    Steiner,
+    // Periphery
     AuriganDirectorate,
     AuriganMercenaries,
     AuriganPirates,
     AuriganRestoration,
     MagistracyOfCanopus,
     TaurianConcordat,
+    // Others
     Locals,
-    NoFaction,
-    MercenaryReviewBoard;
+    NoFaction
 }
 
 private data class Skulls(val value: Double) {
@@ -50,7 +56,7 @@ private data class Location(val x: Double, val y: Double, val z: Double, val jum
 }
 
 private data class PlanetarySystem(val name: String, val location: Location, val allegiance: Faction,
-                                   val skulls: Skulls, val employers: Set<String>, val starLeague: Boolean = false) {
+                                   val skulls: Skulls, val employers: Set<Faction>, val starLeague: Boolean = false) {
     override fun toString(): String {
         return "$name $allegiance $location $skulls"
     }
@@ -72,7 +78,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
             val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { extractValue(it) }
-            return  PlanetarySystem(name,
+            return PlanetarySystem(name,
                 Location.from(x, y, z, jumpDistance),
                 Faction.valueOf(faction),
                 Skulls.from(difficulty),
@@ -80,7 +86,10 @@ private data class PlanetarySystem(val name: String, val location: Location, val
                 starLeague)
         }
 
-        private fun extractEmployers(employers: String) = employers.split(" ").map { it.trim('[', ']', '"', ',') }.toSet()
+        private fun extractEmployers(employers: String) = employers.split(" ")
+            .map { it.trim('[', ']', '"', ',') }
+            .map { Faction.valueOf(it) }
+            .toSet()
     }
 }
 
