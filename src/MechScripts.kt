@@ -51,7 +51,7 @@ private data class Mech(val model: String, val name: String, val weightClass: Cl
 fun main(args: Array<String>) {
     val mechs = File("/users/Gavin/Documents/battleTech/Mechs").listFiles().filter { it.extension.equals("json", true) }
     mechs.map { Mech(it.readLines()) }
-        .sortedBy { it.weight }
-        .forEach{ println(it) }
+        .sortedWith(compareBy(Mech::weight, Mech::name))
+        .forEach { println(it) }
 
 }
