@@ -4,6 +4,10 @@ import java.io.File
 import java.io.StringReader
 import java.util.*
 
+operator fun <T> List<T>.component6() = this[5]
+operator fun <T> List<T>.component7() = this[6]
+operator fun <T> List<T>.component8() = this[7]
+
 private enum class Faction {
     ComStar,
     Davion,
@@ -60,19 +64,19 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         }
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
-            val fields = lines.filter { it.matches(regex) }
-                .map { fixUnicode(it) }
-
-            val name = fields[0]
-            val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
-            val jumpDistance = fields[4].toInt()
-            val faction = Faction.valueOf(fields[5])
-            val skulls = Skulls.from(fields[6].toInt())
-            val employers = fields[7].split(" ").map { it.trim('[', ']', '"', ',') }.toSet()
             val starLeague = lines.any { it.contains("planet_other_starleague") }
 
-            return PlanetarySystem(name, location, jumpDistance, faction, skulls, employers, starLeague)
+            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { fixUnicode(it) }
+            return  PlanetarySystem(name,
+                Location(x.toDouble(), y.toDouble(), z.toDouble()),
+                jumpDistance.toInt(),
+                Faction.valueOf(faction),
+                Skulls.from(difficulty.toInt()),
+                extractEmployers(employers),
+                starLeague)
         }
+
+        private fun extractEmployers(employers: String) = employers.split(" ").map { it.trim('[', ']', '"', ',') }.toSet()
     }
 }
 
