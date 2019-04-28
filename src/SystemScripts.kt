@@ -81,11 +81,7 @@ fun main(args: Array<String>) {
     val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it.readLines()) }
         .distinct()
-        .groupBy { it.allegiance }
+        .sortedBy { it.allegiance }
 
-    systemsByAllegiance.keys.forEach {
-            systemsByAllegiance[it]?.forEach {
-                    system -> println(system)
-            }
-    }
+    systemsByAllegiance.forEach { println(it) }
 }
