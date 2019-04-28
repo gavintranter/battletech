@@ -11,14 +11,12 @@ private enum class Class {
     Assault;
 
     companion object Factory {
-        fun from(tonnage: Int): Class {
-            return when (tonnage) {
+        fun from(tonnage: Int) = when (tonnage) {
                 in 1 until 40 -> Light
                 in 40 until 60 -> Medium
                 in 60 until 80 -> Heavy
                 else -> Assault
             }
-        }
     }
 }
 
@@ -41,7 +39,7 @@ private data class Mech(val model: String, val name: String, val tonnageClass: C
 
         operator fun invoke(lines: List<String>): Mech {
             val (name, tonnage, variantName) = lines.filter { it.matches(regex) }
-                .map { extractValue(it) }
+                .map(::extractValue)
 
             return Mech(variantName, name, Class.from(tonnage.toInt()), tonnage.toInt())
         }
@@ -52,6 +50,6 @@ fun main(args: Array<String>) {
     val mechs = File("/users/Gavin/Documents/battleTech/Mechs").listFiles().filter { it.extension.equals("json", true) }
     mechs.map { Mech(it.readLines()) }
         .sortedWith(compareBy(Mech::tonnage, Mech::name))
-        .forEach { println(it) }
+        .forEach(::println)
 
 }
