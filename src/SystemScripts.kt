@@ -30,8 +30,8 @@ private data class Skulls(val value: Double) {
     }
 
     companion object Factory {
-        fun from(difficulty: Int): Skulls {
-            val skulls = (difficulty * 0.5) + 4
+        fun from(difficulty: String): Skulls {
+            val skulls = (difficulty.toInt() * 0.5) + 4
             return Skulls(skulls)
         }
     }
@@ -39,7 +39,13 @@ private data class Skulls(val value: Double) {
 
 private data class Location(val x: Double, val y: Double, val z: Double) {
     override fun toString(): String {
-        return "$x,$y,$z"
+        return "[$x,$y,$z]"
+    }
+
+    companion object Factory {
+        fun from(x: String, y: String, z: String): Location {
+            return Location(x.toDouble(), y.toDouble(), z.toDouble())
+        }
     }
 }
 
@@ -68,10 +74,10 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 
             val (name, x, y, z, jumpDistance, faction, difficulty, employers) = lines.filter { it.matches(regex) }.map { extractValue(it) }
             return  PlanetarySystem(name,
-                Location(x.toDouble(), y.toDouble(), z.toDouble()),
+                Location.from(x, y, z),
                 jumpDistance.toInt(),
                 Faction.valueOf(faction),
-                Skulls.from(difficulty.toInt()),
+                Skulls.from(difficulty),
                 extractEmployers(employers),
                 starLeague)
         }
