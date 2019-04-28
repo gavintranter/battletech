@@ -52,7 +52,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
             .toRegex()
         private val p = Properties()
 
-        private fun extractValue(value: String): String {
+        private fun fixUnicode(value: String): String {
             val escaped = value.replace(regex, "$2")
             p.load(StringReader("$KEY=$escaped"))
 
@@ -61,7 +61,7 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 
         operator fun invoke(lines: List<String>): PlanetarySystem {
             val fields = lines.filter { it.matches(regex) }
-                .map { extractValue(it) }
+                .map { fixUnicode(it) }
 
             val name = fields[0]
             val location = Location(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble())
