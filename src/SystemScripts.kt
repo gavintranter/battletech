@@ -38,7 +38,7 @@ private data class Skulls(val value: Double) {
     companion object Factory {
         fun from(difficulty: String): Skulls {
             val skulls = (difficulty.toInt() * 0.5) + 4
-            return Skulls(skulls)
+            return Skulls(skulls.coerceAtMost(5.0))
         }
     }
 }
