@@ -2,6 +2,8 @@
 Scripts for extracting information from BattleTech game assets.
 
 ## Usage Notes
+On MacOS the files can be found in `Library/Application Support/Steam/steamapps/common/BATTLETECH/BattleTech.app`
+
 The scripts require the mech chassis files (`chassisdef_NAME_TYPE.json`) and star system files 
 (`starsystemdef_NAME.json`) be moved to their own directories, and that the files are "prepared" for use as defined below.
 
