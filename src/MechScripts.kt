@@ -24,13 +24,13 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
     }
 
     companion object {
-        private val regex = ".*(\"Name\"|\"Tonnage\"|\"VariantName\"): (\"?|[^0]\\d*[[\\\\]-.\\w ']+)\"?,?".toRegex()
+        private val regex = "\\s\"[NameTongVrit]{4,11}\"\\s?:\\s?\"?([^0][- \\w]{2,})".toRegex()
 
         operator fun invoke(lines: List<String>): Mech {
-            val (name, tonnage, variantName) = lines.map { regex.matchEntire(it) }
+            val (name, tonnage, variantName) = lines.map { regex.find(it) }
                 .mapNotNull { it?.groups }
                 .mapNotNull { it.last() }
-                .map { it.value.trim('"', ',') }
+                .map { it.value.trim('"', ',', ' ') }
 
             return Mech(variantName, name, MechClass.from(tonnage.toInt()), tonnage.toInt())
         }

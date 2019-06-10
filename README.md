@@ -21,7 +21,6 @@ The location of each directory created above should be updated in each scripts m
 
 The above mechs are variants of existing mechs and need the following preparation: 
 + All need the `"tonnage"` line to be moved above `"variantName"`
-+ Some require that the leading space be removed from before the colon (:) separating element name and value
 
 ### Systems
 + `"DifficultyList"` array needs to be flattened onto one line
