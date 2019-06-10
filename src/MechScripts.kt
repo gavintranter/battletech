@@ -2,7 +2,7 @@ package uk.trantr.battletech
 
 import java.io.File
 
-private enum class Class {
+private enum class MechClass {
     Light,
     Medium,
     Heavy,
@@ -18,9 +18,9 @@ private enum class Class {
     }
 }
 
-private data class Mech(val model: String, val name: String, val tonnageClass: Class, val tonnage: Int) {
+private data class Mech(val model: String, val name: String, val mechClass: MechClass, val tonnage: Int) {
     override fun toString(): String {
-        return "$model, $name, $tonnageClass, $tonnage"
+        return "$model, $name, $mechClass, $tonnage"
     }
 
     companion object {
@@ -32,7 +32,7 @@ private data class Mech(val model: String, val name: String, val tonnageClass: C
                 .mapNotNull { it.last() }
                 .map { it.value.trim('"', ',') }
 
-            return Mech(variantName, name, Class.from(tonnage.toInt()), tonnage.toInt())
+            return Mech(variantName, name, MechClass.from(tonnage.toInt()), tonnage.toInt())
         }
     }
 }
