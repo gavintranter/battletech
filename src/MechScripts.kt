@@ -1,8 +1,6 @@
 package uk.trantr.battletech
 
 import java.io.File
-import java.io.StringReader
-import java.util.*
 
 private enum class Class {
     Light,
@@ -26,20 +24,13 @@ private data class Mech(val model: String, val name: String, val tonnageClass: C
     }
 
     companion object {
-        private const val key = "key"
         private val regex = ".*(\"Name\"|\"Tonnage\"|\"VariantName\"): (\"?|[^0]\\d*[[\\\\]-.\\w ']+)\"?,?".toRegex()
-        private val p = Properties()
-
-        private fun extractValue(value: String): String {
-            val escaped = value.replace(regex, "$2").trim('"', ',')
-            p.load(StringReader("$key=$escaped"))
-
-            return p.getProperty(key)
-        }
 
         operator fun invoke(lines: List<String>): Mech {
-            val (name, tonnage, variantName) = lines.filter { it.matches(regex) }
-                .map(::extractValue)
+            val (name, tonnage, variantName) = lines.map { regex.matchEntire(it) }
+                .mapNotNull { it?.groups }
+                .mapNotNull { it.last() }
+                .map { it.value.trim('"', ',') }
 
             return Mech(variantName, name, Class.from(tonnage.toInt()), tonnage.toInt())
         }
