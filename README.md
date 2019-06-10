@@ -27,7 +27,7 @@ The above mechs are variants of existing mechs and need the following preparatio
 + `"ContractEmployers"` array needs to be flattened onto one line
 
 ## Unlockable Assets
-It should be notes that the following Mechs are embedded in the runtime and can not be used with these scripts:
+It should be noted that the following Mechs are embedded in the runtime and can not be used with these scripts:
 ### Urban Warfare
 * RVN-1X = Raven
 * Javelin
