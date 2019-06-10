@@ -26,9 +26,10 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
     companion object {
         private val regex = "\\s\"[NameTongVrit]{4,11}\"\\s?:\\s?\"?([^0][- \\w]{2,})".toRegex()
 
-        operator fun invoke(lines: List<String>): Mech {
-            val (name, tonnage, variantName) = lines.map { regex.find(it) }
-                .mapNotNull { it?.groups }
+        operator fun invoke(file: File): Mech {
+            val (name, tonnage, variantName) = file.readLines()
+                .mapNotNull { regex.find(it) }
+                .map { it.groups }
                 .mapNotNull { it.last() }
                 .map { it.value.trim('"', ',', ' ') }
 
@@ -39,8 +40,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
 
 fun main(args: Array<String>) {
     val mechs = File("/users/Gavin/Documents/battleTech/Mechs").listFiles().filter { it.extension.equals("json", true) }
-    mechs.map { Mech(it.readLines()) }
+    mechs.map { Mech(it) }
         .sortedWith(compareBy(Mech::tonnage, Mech::model))
         .forEach(::println)
-
 }
