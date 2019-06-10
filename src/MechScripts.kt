@@ -27,11 +27,11 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
         private val regex = "\\s\"[NameTongVrit]{4,11}\"\\s?:\\s?\"?([^0][- \\w]{2,})".toRegex()
 
         operator fun invoke(file: File): Mech {
-            val (name, tonnage, variantName) = file.readLines()
-                .mapNotNull { regex.find(it) }
-                .map { it.groups }
+            val (name, tonnage, variantName) = regex.findAll(file.readText())
+                .mapNotNull { it.groups }
                 .mapNotNull { it.last() }
                 .map { it.value.trim('"', ',', ' ') }
+                .toList()
 
             return Mech(variantName, name, MechClass.from(tonnage.toInt()), tonnage.toInt())
         }
