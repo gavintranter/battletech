@@ -42,28 +42,29 @@ private data class Skulls(val value: Double) {
 private data class PlanetarySystem(val name: String, val allegiance: Faction, val skulls: Skulls,
                                    val employers: Set<Faction>, val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "$name $allegiance $skulls"
+        return "$name $allegiance $skulls $starLeague"
     }
 
     companion object {
         private const val KEY = "KEY"
-            private val regex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmpos]{1,17}\"\\s?:\\s?[\"\\[]?(.*)[\"\\]]?"
-            .toRegex()
+        private val systemRegex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmpos]{1,17}\"\\s?:\\s?[\"\\[]?(.*)[\"\\]]?".toRegex()
+        private val starLeagueRegex = "planet_other_starleague".toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
-            val escaped = value.replace(regex, "$1")
-            p.load(StringReader("$KEY=$escaped"))
+            p.load(StringReader("$KEY=$value"))
 
             return p.getProperty(KEY).trim('"', ',', ']')
         }
 
         operator fun invoke(file: File): PlanetarySystem {
-            val starLeague = file.readLines().any { it.contains("planet_other_starleague") }
+            val starLeague = starLeagueRegex.containsMatchIn(file.readText())
 
-            val (name, faction, difficulty, employers) = file.readLines()
-                .filter { regex.containsMatchIn(it) }
-                .map(::extractValue)
+            val (name, faction, difficulty, employers) = systemRegex.findAll(file.readText())
+                .mapNotNull { it.groups }
+                .mapNotNull { it.last() }
+                .map { extractValue(it.value) }
+                .toList()
 
             return PlanetarySystem(name,
                 Faction.valueOf(faction),
@@ -72,8 +73,8 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
                 starLeague)
         }
 
-        private fun extractEmployers(employers: String) = employers.split(" ")
-            .map { it.trim('"', ',') }
+        private fun extractEmployers(employers: String) = employers.split(", ")
+            .map { it.trim('"') }
             .map { Faction.valueOf(it) }
             .toSet()
     }
