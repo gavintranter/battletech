@@ -4,10 +4,6 @@ import java.io.File
 import java.io.StringReader
 import java.util.*
 
-operator fun <T> List<T>.component6() = this[5]
-operator fun <T> List<T>.component7() = this[6]
-operator fun <T> List<T>.component8() = this[7]
-
 private enum class Faction {
     // Independent powers
     ComStar,
@@ -43,27 +39,15 @@ private data class Skulls(val value: Double) {
     }
 }
 
-private data class Location(val x: Double, val y: Double, val z: Double, val jumpDistance: Int) {
+private data class PlanetarySystem(val name: String, val allegiance: Faction, val skulls: Skulls,
+                                   val employers: Set<Faction>, val starLeague: Boolean = false) {
     override fun toString(): String {
-        return "[[$x,$y,$z],[$jumpDistance]]"
-    }
-
-    companion object Factory {
-        fun from(x: String, y: String, z: String, jumpDistance: String): Location {
-            return Location(x.toDouble(), y.toDouble(), z.toDouble(), jumpDistance.toInt())
-        }
-    }
-}
-
-private data class PlanetarySystem(val name: String, val location: Location, val allegiance: Faction,
-                                   val skulls: Skulls, val employers: Set<Faction>, val starLeague: Boolean = false) {
-    override fun toString(): String {
-        return "$name $allegiance $location $skulls"
+        return "$name $allegiance $skulls"
     }
 
     companion object {
         private const val KEY = "KEY"
-        private val regex = ".*(\"Name\"|\"Owner\"|\"x\"|\"y\"|\"z\"|\"JumpDistance\"|\"DefaultDifficulty\"|\"ContractEmployers\"): \"?([[\\\\]-.\\w ']+|.*)\"?,?"
+        private val regex = ".*(\"Name\"|\"Owner\"|\"DefaultDifficulty\"|\"ContractEmployers\"): \"?([[\\\\]-.\\w ']+|.*)\"?,?"
             .toRegex()
         private val p = Properties()
 
@@ -77,12 +61,11 @@ private data class PlanetarySystem(val name: String, val location: Location, val
         operator fun invoke(file: File): PlanetarySystem {
             val starLeague = file.readLines().any { it.contains("planet_other_starleague") }
 
-            val (name, x, y, z, jumpDistance, faction, difficulty, employers) = file.readLines()
+            val (name, faction, difficulty, employers) = file.readLines()
                 .filter { it.matches(regex) }
                 .map(::extractValue)
 
             return PlanetarySystem(name,
-                Location.from(x, y, z, jumpDistance),
                 Faction.valueOf(faction),
                 Skulls.from(difficulty),
                 extractEmployers(employers),
@@ -97,7 +80,6 @@ private data class PlanetarySystem(val name: String, val location: Location, val
 }
 
 fun main(args: Array<String>) {
-    // Replace path with location of planetary system json files
     val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it) }
         .distinct()
