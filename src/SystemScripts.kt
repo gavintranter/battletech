@@ -47,14 +47,14 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 
     companion object {
         private const val KEY = "KEY"
-        private val systemRegex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmpos]{1,17}\"\\s?:\\s?[\"\\[]?(.*)[\"\\]]?".toRegex()
+        private val systemRegex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmpos]{1,17}\"\\s?:\\s?[\"\\[]?([\\w[-\"',\\s\\\\]*]+)]?,".toRegex()
         private val starLeagueRegex = "planet_other_starleague".toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
             p.load(StringReader("$KEY=$value"))
 
-            return p.getProperty(KEY).trim('"', ',', ']')
+            return p.getProperty(KEY).trim('"')
         }
 
         operator fun invoke(file: File): PlanetarySystem {

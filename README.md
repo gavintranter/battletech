@@ -25,6 +25,7 @@ The above mechs are variants of existing mechs and need the following preparatio
 ### Systems
 + `"DifficultyList"` array needs to be flattened onto one line
 + `"ContractEmployers"` array needs to be flattened onto one line
++ `"Ùr Cruinne's"` json file is invalid, a `,` needs to be added to the end of `DefaultDifficulty`
 
 ## Unlockable Assets
 It should be noted that the following Mechs are embedded in the runtime and can not be used with these scripts:
