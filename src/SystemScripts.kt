@@ -47,22 +47,22 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 
     companion object {
         private const val KEY = "KEY"
-        private val regex = ".*(\"Name\"|\"Owner\"|\"DefaultDifficulty\"|\"ContractEmployers\"): \"?([[\\\\]-.\\w ']+|.*)\"?,?"
+            private val regex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmpos]{1,17}\"\\s?:\\s?[\"\\[]?(.*)[\"\\]]?"
             .toRegex()
         private val p = Properties()
 
         private fun extractValue(value: String): String {
-            val escaped = value.replace(regex, "$2")
+            val escaped = value.replace(regex, "$1")
             p.load(StringReader("$KEY=$escaped"))
 
-            return p.getProperty(KEY)
+            return p.getProperty(KEY).trim('"', ',', ']')
         }
 
         operator fun invoke(file: File): PlanetarySystem {
             val starLeague = file.readLines().any { it.contains("planet_other_starleague") }
 
             val (name, faction, difficulty, employers) = file.readLines()
-                .filter { it.matches(regex) }
+                .filter { regex.containsMatchIn(it) }
                 .map(::extractValue)
 
             return PlanetarySystem(name,
@@ -73,7 +73,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
         }
 
         private fun extractEmployers(employers: String) = employers.split(" ")
-            .map { it.trim('[', ']', '"', ',') }
+            .map { it.trim('"', ',') }
             .map { Faction.valueOf(it) }
             .toSet()
     }
