@@ -82,7 +82,8 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 }
 
 fun main(args: Array<String>) {
-    val systemsFiles = File("/users/Gavin/Documents/battleTech/Systems").listFiles().filter { it.extension.equals("json", true) }
+    val systemsFiles: Array<File> = File("/users/Gavin/Documents/battleTech/Systems").listFiles { name -> name.extension == "json"  }
+        ?: emptyArray()
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it) }
         .distinct()
         .sortedBy(PlanetarySystem::allegiance)
