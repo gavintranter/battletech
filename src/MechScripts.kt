@@ -39,7 +39,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
 }
 
 fun main(args: Array<String>) {
-    val mechs = File("/users/Gavin/Documents/battleTech/Mechs").listFiles().filter { it.extension.equals("json", true) }
+    val mechs: List<File> = File("/users/Gavin/Documents/battleTech/Mechs").listFiles()?.filter { it.extension.equals("json", true) } ?: listOf()
     mechs.map { Mech(it) }
         .sortedWith(compareBy(Mech::tonnage, Mech::model))
         .forEach(::println)
