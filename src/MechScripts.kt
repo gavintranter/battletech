@@ -2,6 +2,9 @@ package uk.trantr.battletech
 
 import java.io.File
 
+fun getAssets(assetName: String): Array<File> = File("/users/Gavin/Documents/battleTech/$assetName")
+    .listFiles { name -> name.extension == "json"  } ?: emptyArray()
+
 private enum class MechClass {
     Light,
     Medium,
@@ -39,8 +42,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
 }
 
 fun main(args: Array<String>) {
-    val mechs: Array<File> = File("/users/Gavin/Documents/battleTech/Mechs").listFiles { name -> name.extension == "json"  }
-        ?: emptyArray()
+    val mechs: Array<File> = getAssets("Mechs")
     mechs.map { Mech(it) }
         .sortedWith(compareBy(Mech::tonnage, Mech::model))
         .forEach(::println)
