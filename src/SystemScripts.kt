@@ -54,7 +54,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
         private fun extractValue(value: String): String {
             p.load(StringReader("$KEY=$value"))
 
-            return p.getProperty(KEY).trim('"')
+            return p.getProperty(KEY)
         }
 
         operator fun invoke(file: File): PlanetarySystem {
