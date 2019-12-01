@@ -5,7 +5,7 @@ Scripts for extracting information from BattleTech game assets.
 On MacOS the files can be found in `Library/Application Support/Steam/steamapps/common/BATTLETECH/BattleTech.app`
 
 The scripts require the mech chassis files (`chassisdef_NAME_TYPE.json`) and star system files 
-(`starsystemdef_NAME.json`) be moved to their own directories, and that the files are "prepared" for use as defined below.
+(`starsystemdef_NAME.json`) be copied to their own directories, and that the files are "prepared" for use as defined below.
 
 It is recommended that to overwrite any previous copies of the above files as details of mechs and systems may have 
 changed between updates.
@@ -13,10 +13,17 @@ changed between updates.
 The location of each directory created above should be updated in each scripts main method
 
 ### Mechs
-#### 1.6 Update
+#### 1.8 Update
+* BNC-3S - Banshee
+* BJ-1DB - Blackjack
+* CPLT-C4 - Catapult
 * UM-R60L - UrbanMech
 * UM-R90 - SuburbanMech
+* VND1AA - Vindicator
+#### 1.6 Update
 * BJ-1DB - Blackjack
+* UM-R60L - UrbanMech
+* UM-R90 - SuburbanMech
 * VND1AA - Vindicator
 
 The above mechs are variants of existing mechs and need the following preparation: 
@@ -29,12 +36,14 @@ The above mechs are variants of existing mechs and need the following preparatio
 
 ## Unlockable Assets
 It should be noted that the following Mechs are embedded in the runtime and can not be used with these scripts:
+### Heavy Metal
 ### Urban Warfare
-* RVN-1X = Raven
-* Javelin
+* RVN-1X - Raven
+* JVN-10F - Javelin
+* JVN-10N - Javelin
+* HCT-3X - Hatchman
 ### Flashpoint
 * HCT-3F - Hatchman
-* HCT-3X - Hatchman
 * CRB-27 - Crab
 * BSC-27 - Big Steel Claw
 * CP-10-Q - Cyclops
