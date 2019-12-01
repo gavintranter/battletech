@@ -44,7 +44,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
 }
 
 fun main(args: Array<String>) {
-    val mechs: Array<File> = getAssets("Mechs")
+    val mechs = getAssets("Mechs").filterNot { f -> f.name.contains("TARGETDUMMY") }
     mechs.map { Mech(it) }
         .sortedWith(compareBy(Mech::tonnage, Mech::model))
         .forEach(::println)
