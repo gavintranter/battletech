@@ -13,6 +13,7 @@ changed between updates.
 The location of each directory created above should be updated in each scripts main method
 
 ### Mechs
+#### 1.9 Update
 #### 1.8 Update
 * BNC-3S - Banshee
 * BJ-1DB - Blackjack
