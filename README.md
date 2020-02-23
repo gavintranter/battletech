@@ -37,7 +37,28 @@ The above mechs are variants of existing mechs and need the following preparatio
 
 ## Unlockable Assets
 It should be noted that the following Mechs are embedded in the runtime and can not be used with these scripts:
-### Heavy Metal
+### Heavy Metal/1.9
+* FLE-4 - Flea
+* FLE-15 - Flea
+* JVN-10A - Javelin
+* RVN-3X - Raven
+* ASN-21 - Assassin
+* ASN-101 - Assassin
+* VL-2T - Vulcan
+* VL-5T - Vulcan
+* PXH-1 - Phoenix Hawk
+* PXH-1b - Phoenix Hawk
+* PXH-1K - Phoenix Hawk
+* CRB-27b - Crab
+* RFL-3C - Rifleman
+* RFL-3N - Rifleman
+* RFL-4D - Rifleman
+* RFL-RIP - Rifleman
+* ARC-2R - Archer 
+* ARC-2S - Archer 
+* ARC-LS - Archer 
+* ARC-XO - Archer
+* CP-10-HQ - Cyclops 
 ### Urban Warfare
 * RVN-1X - Raven
 * JVN-10F - Javelin
