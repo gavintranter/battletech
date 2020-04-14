@@ -13,17 +13,23 @@ fun extractDetails(regex: Regex, file: File): List<String> = regex.findAll(file.
     .toList()
 
 private enum class MechClass {
+    Unknown,
+    UltraLight,
     Light,
     Medium,
     Heavy,
-    Assault;
+    Assault,
+    SuperHeavy;
 
     companion object Factory {
         fun from(tonnage: Int) = when (tonnage) {
-                in 1 until 40 -> Light
+                in 1 until 20 -> UltraLight
+                in 20 until 40 -> Light
                 in 40 until 60 -> Medium
                 in 60 until 80 -> Heavy
-                else -> Assault
+                in 80 until 101 -> Assault
+                in 101 until 1000 -> SuperHeavy
+                else -> Unknown
             }
     }
 }
