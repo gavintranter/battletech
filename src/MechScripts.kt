@@ -46,6 +46,21 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
         return result
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Mech
+
+        if (model != other.model) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return model.hashCode()
+    }
+
     override fun toString(): String {
         return "$mechClass, $model, $name, $tonnage, $resale"
     }
