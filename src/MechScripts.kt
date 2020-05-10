@@ -40,10 +40,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
 
     override fun compareTo(other: Mech): Int {
         val result = tonnage.compareTo(other.tonnage)
-        if (result == 0) {
-           return model.compareTo(other.model)
-        }
-        return result
+        return if (result == 0) model.compareTo(other.model) else result
     }
 
     override fun equals(other: Any?): Boolean {
@@ -51,10 +48,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
         if (javaClass != other?.javaClass) return false
 
         other as Mech
-
-        if (model != other.model) return false
-
-        return true
+        return model == other.model
     }
 
     override fun hashCode(): Int {
