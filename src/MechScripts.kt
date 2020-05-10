@@ -34,27 +34,36 @@ private enum class MechClass {
     }
 }
 
-private data class Mech(val model: String, val name: String, val mechClass: MechClass, val tonnage: Int, val cost: Int) {
+private data class Mech(val model: String, val name: String, val mechClass: MechClass,
+                        val tonnage: Int, val cost: Int) : Comparable<Mech> {
     val resale: Int = ((10.24 / 100) * cost).roundToInt()
+
+    override fun compareTo(other: Mech): Int {
+        val result = tonnage.compareTo(other.tonnage)
+        if (result == 0) {
+           return model.compareTo(other.model)
+        }
+        return result
+    }
 
     override fun toString(): String {
         return "$mechClass, $model, $name, $tonnage, $resale"
     }
-
     companion object {
-        private val regex = "\\s\"[CostNameTngVri]{4,11}\"\\s?:\\s?\"?([^0][- \\w]{2,})".toRegex()
 
+        private val regex = "\\s\"[CostNameTngVri]{4,11}\"\\s?:\\s?\"?([^0][- \\w]{2,})".toRegex()
         operator fun invoke(file: File): Mech {
             val (cost, name, tonnage, variantName) = extractDetails(regex, file)
 
             return Mech(variantName, name, MechClass.from(tonnage.toInt()), tonnage.toInt(), cost.toInt())
         }
+
     }
 }
 
 fun main(args: Array<String>) {
     val mechs = getAssets("Mechs").filterNot { f -> f.name.contains("TARGETDUMMY") }
     mechs.map { Mech(it) }
-        .sortedWith(compareBy(Mech::tonnage, Mech::model))
+        .sorted()
         .forEach(::println)
 }
