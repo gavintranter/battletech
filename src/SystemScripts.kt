@@ -70,6 +70,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
         private val starLeagueRegex = "planet_other_starleague".toRegex()
         private val p = Properties()
 
+        // Seem to need this to deal with accented chars
         private fun extractValue(value: String): String {
             p.load(StringReader("$KEY=$value"))
 
@@ -98,9 +99,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 
 fun main(args: Array<String>) {
     val systemsFiles: Array<File> = getAssets("Systems")
-    val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it) }
-        .distinct()
+    systemsFiles.map { PlanetarySystem(it) }
         .sorted()
-
-    systemsByAllegiance.forEach { println(it) }
+        .forEach { println(it) }
 }

@@ -76,5 +76,5 @@ fun main(args: Array<String>) {
     val mechAssets = getAssets("Mechs").filterNot { f -> f.name.contains("TARGETDUMMY") }
     mechAssets.map { Mech(it) }
         .sorted()
-        .forEach(::println)
+        .forEach { println(it) }
 }
