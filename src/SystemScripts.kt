@@ -26,15 +26,35 @@ private enum class Faction {
     NoFaction
 }
 
-private data class Skulls(val value: Double) {
+private enum class Skulls(val representation: String) {
+    Zero("0"), Half("0.5"),
+    One("1"), One_Half("1.5"),
+    Two("2"), Two_Half("2.5"),
+    Three("3"), Three_Half("3.5"),
+    Four("4"), Four_Half("4.5"),
+    Five("5");
+
     override fun toString(): String {
-        return "[Skulls: $value]"
+        return "[Skulls $representation]"
     }
 
-    companion object Factory {
-        fun from(difficulty: String): Skulls {
-            val skulls = (difficulty.toInt() * 0.5) + 4
-            return Skulls(skulls.coerceAtMost(5.0))
+    companion object {
+        operator fun invoke(difficulty: String): Skulls {
+            val skulls = ((difficulty.toInt() * 0.5) + 4).coerceAtMost(5.0)
+            return when (skulls) {
+                0.0 -> Zero
+                0.5 -> Half
+                1.0 -> One
+                1.5 -> One_Half
+                2.0 -> Two
+                2.5 -> Two_Half
+                3.0 -> Three
+                3.5 -> Three_Half
+                4.0 -> Four
+                4.5 -> Four_Half
+                5.0 -> Five
+                else -> throw IllegalArgumentException("Expected value between 0.0 and 5.0 found $difficulty")
+            }
         }
     }
 }
@@ -84,7 +104,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 
             return PlanetarySystem(extractValue(name),
                 Faction.valueOf(faction),
-                Skulls.from(difficulty),
+                Skulls(difficulty),
                 extractFactions(employers),
                 extractFactions(targets),
                 starLeague)
