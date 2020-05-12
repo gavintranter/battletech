@@ -3,9 +3,11 @@ package uk.trantr.battletech
 import java.io.File
 import kotlin.math.roundToInt
 
+// Global to all BattleTech scripts, probably should be moved
 fun getAssets(assetName: String): Array<File> = File("/users/Gavin/Documents/battleTech/$assetName")
     .listFiles { name -> name.extension == "json"  } ?: emptyArray()
 
+// Global to all BattleTech scripts, probably should be moved
 fun extractDetails(regex: Regex, file: File): List<String> = regex.findAll(file.readText())
     .mapNotNull { it.groups }
     .mapNotNull { it.last() }

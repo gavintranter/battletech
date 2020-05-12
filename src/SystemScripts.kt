@@ -40,7 +40,14 @@ private data class Skulls(val value: Double) {
 }
 
 private data class PlanetarySystem(val name: String, val allegiance: Faction, val skulls: Skulls,
-                                   val employers: Set<Faction>, val targets: Set<Faction>, val starLeague: Boolean = false) {
+                                   val employers: Set<Faction>, val targets: Set<Faction>,
+                                   val starLeague: Boolean = false) : Comparable<PlanetarySystem> {
+
+    override fun compareTo(other: PlanetarySystem): Int {
+        val result = allegiance.compareTo(other.allegiance)
+        return if (result == 0) name.compareTo(other.name) else result
+    }
+
     override fun toString(): String {
         return "$name $allegiance $skulls $starLeague"
     }
@@ -81,7 +88,7 @@ fun main(args: Array<String>) {
     val systemsFiles: Array<File> = getAssets("Systems")
     val systemsByAllegiance = systemsFiles.map { PlanetarySystem(it) }
         .distinct()
-        .sortedBy(PlanetarySystem::allegiance)
+        .sorted()
 
     systemsByAllegiance.forEach { println(it) }
 }
