@@ -38,7 +38,7 @@ private enum class MechClass {
 
 private data class Mech(val model: String, val name: String, val mechClass: MechClass,
                         val tonnage: Int, val cost: Int) : Comparable<Mech> {
-    val resale: Int = ((10.24 / 100) * cost).roundToInt()
+    val resale: Int = (cost / 9.765625).roundToInt()
 
     override fun compareTo(other: Mech): Int {
         val result = tonnage.compareTo(other.tonnage)
