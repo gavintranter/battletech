@@ -85,7 +85,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
 
     companion object {
         private const val KEY = "KEY"
-        private val systemRegex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmposTg]{1,17}\"\\s?:\\s?[\"\\[]?([\\w[-\"',\\s\\\\]*]+)]?,".toRegex()
+        private val systemRegex = "\\s\"[NODC][aweo][mnf][eraultDifcyEmposTg]{1,17}\"\\s?:\\s?[\"\\[]?([\\w-\"',\\s\\\\*]+)]?,".toRegex()
         private val starLeagueRegex = "planet_other_starleague".toRegex()
         private val p = Properties()
 
