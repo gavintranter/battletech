@@ -9,7 +9,7 @@ fun getAssets(assetName: String): Array<File> = File("/users/Gavin/Documents/bat
 
 // Global to all BattleTech scripts, probably should be moved
 fun extractDetails(regex: Regex, file: File): List<String> = regex.findAll(file.readText())
-    .mapNotNull { it.groups }
+    .map { it.groups }
     .mapNotNull { it.last() }
     .map { it.value.trim('"', ',', ' ') }
     .toList()
