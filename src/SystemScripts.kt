@@ -40,8 +40,7 @@ private enum class Skulls(val representation: String) {
 
     companion object {
         operator fun invoke(difficulty: String): Skulls {
-            val skulls = ((difficulty.toInt() * 0.5) + 4).coerceAtMost(5.0)
-            return when (skulls) {
+            return when (((difficulty.toInt() * 0.5) + 4).coerceAtMost(5.0)) {
                 0.0 -> Zero
                 0.5 -> Half
                 1.0 -> One
