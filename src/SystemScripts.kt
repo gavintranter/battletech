@@ -28,10 +28,10 @@ private enum class Faction {
 
 private enum class Skulls(val representation: String) {
     Zero("0"), Half("0.5"),
-    One("1"), One_Half("1.5"),
-    Two("2"), Two_Half("2.5"),
-    Three("3"), Three_Half("3.5"),
-    Four("4"), Four_Half("4.5"),
+    One("1"), OnePointFive("1.5"),
+    Two("2"), TwoPointFive("2.5"),
+    Three("3"), ThreePointFive("3.5"),
+    Four("4"), FourPointFive("4.5"),
     Five("5");
 
     override fun toString(): String {
@@ -44,13 +44,13 @@ private enum class Skulls(val representation: String) {
                 0.0 -> Zero
                 0.5 -> Half
                 1.0 -> One
-                1.5 -> One_Half
+                1.5 -> OnePointFive
                 2.0 -> Two
-                2.5 -> Two_Half
+                2.5 -> TwoPointFive
                 3.0 -> Three
-                3.5 -> Three_Half
+                3.5 -> ThreePointFive
                 4.0 -> Four
-                4.5 -> Four_Half
+                4.5 -> FourPointFive
                 5.0 -> Five
                 else -> throw IllegalArgumentException("Expected value between 0.0 and 5.0 found $difficulty")
             }
