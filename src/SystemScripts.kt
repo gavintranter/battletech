@@ -116,7 +116,7 @@ private data class PlanetarySystem(val name: String, val allegiance: Faction, va
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val systemsFiles: Array<File> = getAssets("Systems")
     systemsFiles.map { PlanetarySystem(it) }
         .sorted()

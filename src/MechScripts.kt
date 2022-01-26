@@ -23,7 +23,7 @@ private enum class MechClass {
     Assault,
     SuperHeavy;
 
-    companion object Factory {
+    companion object {
         fun from(tonnage: Int) = when (tonnage) {
                 in 1 until 20 -> UltraLight
                 in 20 until 40 -> Light
@@ -72,7 +72,7 @@ private data class Mech(val model: String, val name: String, val mechClass: Mech
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val mechAssets = getAssets("Mechs").filterNot { f -> f.name.contains("TARGETDUMMY") }
     mechAssets.map { Mech(it) }
         .sorted()
